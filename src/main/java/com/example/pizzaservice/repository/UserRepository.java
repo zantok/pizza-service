@@ -16,5 +16,9 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.name = ?1")
     User findByName(String name);
+
     List<User> findAll();
+
+    @Query("SELECT u FROM User u WHERE u.id = ?1")
+    User getById(Long userId);
 }

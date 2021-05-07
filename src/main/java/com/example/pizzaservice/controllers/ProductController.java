@@ -14,15 +14,15 @@ import java.util.List;
 public class ProductController {
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
-    @GetMapping("/products{type}")
-    public List<Product> getProductsList(@RequestParam String type){
+    @GetMapping("/products")
+    public List<Product> getProductsList(@RequestParam String type) {
         return productService.getAllProductsByType(type);
     }
 
-    @GetMapping("/product{id}")
-    public Product getProduct(@RequestParam Long id){
+    @GetMapping("/product")
+    public Product getProduct(@RequestParam Long id) {
         return productService.getProductById(id);
     }
 }

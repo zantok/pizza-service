@@ -1,6 +1,7 @@
 package com.example.pizzaservice.repository;
 
 import com.example.pizzaservice.model.Order;
+import com.example.pizzaservice.model.User;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -9,10 +10,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface OrderRepository extends  CrudRepository<Order, Long> {
+public interface OrderRepository extends CrudRepository<Order, Long> {
 
     @Query("SELECT o from Order o WHERE o.id = ?1")
     Order getById(Long id);
+
+    @Query("SELECT o from Order o WHERE o.user = ?1")
+    List<Order> getbyUser(User user);
 
 
     List<Order> findAll();

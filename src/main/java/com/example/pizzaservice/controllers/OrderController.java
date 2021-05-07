@@ -1,7 +1,8 @@
 package com.example.pizzaservice.controllers;
 
-import com.example.pizzaservice.model.OrderDetails;
+import com.example.pizzaservice.model.Order;
 import com.example.pizzaservice.services.OrderService;
+import com.example.pizzaservice.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,15 +12,15 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
+
+    @Autowired
+    private UserService userService;
+
 
     @GetMapping("/history")
-    public List<OrderDetails> getOrder(@RequestParam Long orderId){
-        return orderService.getOrderDetailsByOrderId(orderId);
-    }
+    public List<Order> getOrderHistory(@RequestParam Long userId) {
 
-//    @PostMapping("/order{name}")
-//    public void completeOrder(@PathVariable String name, ){
-//
-//    }
+        return orderService.getUserOrderHistory(userService.getUserById(userId));
+    }
 }

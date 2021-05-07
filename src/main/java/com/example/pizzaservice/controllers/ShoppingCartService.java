@@ -14,20 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class ShoppingCartService {
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
 
     @Autowired
-    UserService userService;
-
-    @PostMapping("/product{id}")
-    public void addProductToCart(@RequestParam String productId){
-
-    }
+    private UserService userService;
 
     @PostMapping("/shopping-list")
-    public void cartCheckout(@RequestParam String name, @RequestBody Cart cart){
+    public void cartCheckout(@RequestParam String name, @RequestBody Cart cart) {
         Order order = orderService.newOrder(userService.getUser(name), cart);
-        orderService.createOrderDetails(order,cart);
+        orderService.createOrderDetails(order, cart);
 
     }
 

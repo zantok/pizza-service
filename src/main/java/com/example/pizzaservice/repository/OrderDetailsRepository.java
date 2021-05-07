@@ -13,13 +13,10 @@ import java.util.List;
 public interface OrderDetailsRepository extends CrudRepository<OrderDetails, Long> {
     @Query("SELECT od FROM OrderDetails od WHERE od.id = ?1")
     List<OrderDetails> findByODId(Long orderDetailsId);
+
     List<OrderDetails> findAll();
 
-    @Query("SELECT od FROM OrderDetails od WHERE od.order = ?1")
-    List<OrderDetails> findByOrderId(Order order);
-
-//    @Modifying
-//    @Query("UPDATE OrderDetails od SET  od.quantity = ?2 WHERE od.id = ?1")
-//    void updateQuantityById(Long id, int quantity);
+    @Query("SELECT od FROM OrderDetails od WHERE od.order_id = ?1")
+    List<OrderDetails> findByOrderId(Long orderId);
 
 }

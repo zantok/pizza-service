@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
-public class OrderService  {
+public class OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
@@ -19,22 +19,22 @@ public class OrderService  {
     @Autowired
     private OrderDetailsRepository orderDetailsRepository;
 
-    public void saveOrder(Order order){
+    public void saveOrder(Order order) {
         orderRepository.save(order);
     }
 
-    public void updateStatus(Order order,boolean status){
-        orderRepository.updateById(order.getId(),status);
+    public void updateStatus(Order order, boolean status) {
+        orderRepository.updateById(order.getId(), status);
     }
 
-    public Order newOrder(User user,Cart cart){
+    public Order newOrder(User user, Cart cart) {
         Order newOrder = new Order();
-        newOrder.setDate(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        newOrder.setDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy H:mm:ss")));
         newOrder.setUser(user);
-        double orderSum= 0.0;
-        for (CartItem item: cart.getCartItems()
-             ) {
-            orderSum +=item.getCount() * item.getProduct().getPrice();
+        double orderSum = 0.0;
+        for (CartItem item : cart.getCartItems()
+        ) {
+            orderSum += item.getCount() * item.getProduct().getPrice();
         }
         newOrder.setPrice(orderSum);
         newOrder.setAccepted(false);
@@ -42,10 +42,10 @@ public class OrderService  {
         return newOrder;
     }
 
-    public void createOrderDetails(Order order, Cart cart){
-        for (CartItem entry: cart.getCartItems()) {
+    public void createOrderDetails(Order order, Cart cart) {
+        for (CartItem entry : cart.getCartItems()) {
             OrderDetails orderDetails = new OrderDetails();
-            orderDetails.setOrder(order);
+            orderDetails.setOrder_id(order.getId());
             orderDetails.setPrice(entry.getProduct().getPrice() * entry.getCount());
             orderDetails.setProduct(entry.getProduct());
             orderDetails.setQuantity(entry.getCount());
@@ -53,28 +53,11 @@ public class OrderService  {
         }
     }
 
-    public List<OrderDetails> getOrderDetails(Long orderId){
-        return orderDetailsRepository.findByODId(orderId);
-    }
-
-    public List<OrderDetails> getOrderDetailsByOrderId(Long orderId){
-
-        if(orderRepository.findById(orderId).isPresent()){
-            System.out.println("Order " + orderRepository.getById(orderId).getId());
-            return orderDetailsRepository.findByOrderId( orderRepository.getById(orderId));
+    public List<Order> getUserOrderHistory(User user) {
+        if (orderRepository.getbyUser(user).size() > 0) {
+            return orderRepository.getbyUser(user);
         } else {
             return null;
         }
     }
-
-//    public void updateProductCount(OrderDetails orderDetails, int newCount){
-//        orderDetailsRepository.updateQuantityById(orderDetails.getId(),newCount);
-//    }
-
-//    public void deleteFromOrder(OrderDetails orderDetails){
-//        orderDetailsRepository.deleteById(orderDetails.getId());
-//    }
-
-
-
 }

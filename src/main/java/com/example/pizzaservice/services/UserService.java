@@ -10,10 +10,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User addUser(User user){
+    public User addUser(User user) {
         return userRepository.save(user);
     }
-    public User getUser(String name){
+
+    public User getUser(String name) {
         return userRepository.findByName(name);
+    }
+
+    public User getUserById(Long userId) {
+        return userRepository.getById(userId);
     }
 }

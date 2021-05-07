@@ -11,17 +11,17 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @GetMapping("/user")
-    public User getUser(@RequestParam String name){
+    public User getUser(@RequestParam String name) {
         System.out.println(name);
         return userService.getUser(name);
     }
 
     @PostMapping("/user")
-    public User addUser(@RequestParam String name){
-        if (userService.getUser(name) == null){
+    public User addUser(@RequestParam String name) {
+        if (userService.getUser(name) == null) {
             User newUser = new User();
             newUser.setName(name);
             userService.addUser(newUser);

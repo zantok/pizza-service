@@ -1,8 +1,12 @@
 package com.example.pizzaservice.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "orders")
@@ -27,6 +31,11 @@ public class Order implements Serializable {
     @Column(name = "order_status")
     @NotEmpty
     private boolean isAccepted;
+
+    @Column(name = "items")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order_id")
+//    @JsonBackReference
+    private List<OrderDetails> items;
 
     public boolean isAccepted() {
         return isAccepted;
@@ -66,5 +75,14 @@ public class Order implements Serializable {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+
+    public List<OrderDetails> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderDetails> items) {
+        this.items = items;
     }
 }
